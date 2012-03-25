@@ -28,12 +28,12 @@ class OAuthProvider implements AuthenticationProviderInterface
     /**
      * @var Knp\Bundle\OAuthBundle\Security\Http\OAuth\OAuthProviderInterface
      */
-    private $oauthProvider;
+    protected $oauthProvider;
 
     /**
      * @var Symfony\Component\Security\Core\User\UserProviderInterface
      */
-    private $userProvider;
+    protected $userProvider;
 
     /**
      * @param Symfony\Component\Security\Core\User\UserProviderInterface $userProvider
