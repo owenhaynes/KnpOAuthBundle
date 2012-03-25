@@ -124,21 +124,31 @@ class OAuthProvider implements OAuthProviderInterface
 
         return $response->getContent();
     }
-
+    /**
+     * {@inheritDoc}
+    */
+    public function getUserInfo($accessToken)
+    {
+        if ($this->getOption('infos_url') === null) {
+            return $accessToken;
+        }
+        
+        $url = $this->getOption('infos_url').'?'.http_build_query(array(
+            'access_token' => $accessToken
+        ));
+        $userInfo = json_decode($this->httpRequest($url), true);
+        
+        return $userInfo;
+    }
+    
     /**
      * {@inheritDoc}
      */
     public function getUsername($accessToken)
     {
-        if ($this->getOption('infos_url') === null) {
-            return $accessToken;
-        }
-
-        $url = $this->getOption('infos_url').'?'.http_build_query(array(
-            'access_token' => $accessToken
-        ));
-
-        $userInfos    = json_decode($this->httpRequest($url), true);
+        $userInfos = $this->getUserInfo($accessToken);
+        if($userInfos == $accessToken) return $accessToken;
+        
         $usernamePath = explode('.', $this->getOption('username_path'));
 
         $username     = $userInfos;
@@ -152,7 +162,6 @@ class OAuthProvider implements OAuthProviderInterface
 
         return $username;
     }
-
     /**
      * {@inheritDoc}
      */

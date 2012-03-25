@@ -20,6 +20,15 @@ use Symfony\Component\HttpFoundation\Request;
  */
 interface OAuthProviderInterface
 {
+   /**
+     * Retrieves the user's information from an access_token
+     *
+     * @param string $accessToken
+     * @return aray UserInformation
+    */
+    function getUserInfo($accessToken);
+    
+    
     /**
      * Retrieves the user's username from an access_token
      *
